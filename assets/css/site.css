@@ -1,0 +1,266 @@
+/* ============================================================
+   One'sAI — site.css  (v6 · after 37signals)
+   One full-bleed color field. One numbered catalog.
+   - Base: electric blue field, white type, zero decoration
+   - Type: Archivo variable; scale = 1.25em + 1vw (desktop)
+   - Catalog: dt 2.8ch tabular numbers + bold dd; hover shows
+     the body line under the entry, siblings dim
+   - No cards, no gradients, no borders, no shadows
+   ============================================================ */
+
+@font-face{
+  font-family:"Archivo";
+  src:url("../fonts/archivo-var-latin.woff2") format("woff2");
+  font-weight:100 900;
+  font-style:normal;
+  font-display:swap;
+}
+
+:root{
+  --field:      #0E2FD8;
+  --field-dim:  rgba(255,255,255,.4375);
+  --paper:      #FFFFFF;
+  --ink:        #0B0C14;
+
+  --f: "Archivo", "Segoe UI", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+  --m: "Archivo", Consolas, "Cascadia Mono", monospace;
+
+  --fs:   calc(1em + 1vw);
+  --fs-xs: 55%;
+  --fs-s:  72%;
+  --fs-l:  112%;
+  --fs-xl: 128%;
+  --fs-2xl:150%;
+
+  --lh: calc(1.3em + 1vw);
+  --sp: .75em;
+  --tr: .2s ease;
+
+  --num: 2.8ch;
+
+  color-scheme: light;
+  accent-color: var(--field);
+}
+
+@media (min-width: 64em) and (hover:hover) and (pointer:fine){
+  :root{
+    --fs: calc(1.25em + 1vw);
+    --fs-xs: 45%;
+    --fs-s: 62%;
+    --fs-l: 112%;
+    --fs-xl: 124%;
+    --fs-2xl:150%;
+    --lh: 1.3em;
+  }
+}
+
+*, *::before, *::after{ box-sizing:border-box; margin:0; padding:0; }
+
+html{
+  background:var(--field);
+  scrollbar-color:rgba(255,255,255,.45) var(--field);
+  scrollbar-width:thin;
+  -webkit-text-size-adjust:100%;
+}
+body{
+  background:var(--field);
+  color:var(--paper);
+  font-family:var(--f);
+  font-size:var(--fs);
+  line-height:1.3;
+  letter-spacing:-.01em;
+  -webkit-font-smoothing:antialiased;
+  min-height:100dvh;
+  overflow-x:hidden;
+}
+::-webkit-scrollbar{ width:10px; height:10px; background:var(--field); }
+::-webkit-scrollbar-track{ background:var(--field); }
+::-webkit-scrollbar-thumb{ background:rgba(255,255,255,.4); border:3px solid var(--field); border-radius:6px; }
+::-webkit-scrollbar-corner{ background:var(--field); }
+
+a{ color:inherit; text-decoration:none; }
+button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; }
+ol{ list-style:none; }
+::selection{ background:var(--paper); color:var(--field); }
+*:focus-visible{ outline:2px solid var(--paper); outline-offset:3px; border-radius:2px; }
+
+/* ---------- header ---------- */
+.hdr{
+  position:sticky; top:0; z-index:101;
+  background:var(--field);
+  padding:var(--sp) clamp(14px, 3vw, 30px) 0;
+}
+.hdr-in{
+  display:flex; align-items:baseline; gap:clamp(16px, 2.4vw, 30px);
+  font-size:var(--fs-s); font-weight:700;
+}
+.brand{ white-space:nowrap; }
+.nav{ display:flex; gap:clamp(14px, 2vw, 26px); }
+.nav a, .langs button{
+  color:var(--field-dim);
+  transition:color var(--tr);
+  font-weight:700;
+}
+.nav a:hover, .langs button:hover{ color:var(--paper); }
+.langs{ margin-left:auto; display:flex; gap:2px; }
+.langs button{ padding:0 4px; }
+.langs button.on{ color:var(--paper); text-decoration:underline; text-underline-offset:.28em; }
+
+/* ---------- stage ---------- */
+.cluster{
+  padding:clamp(48px, 12vh, 140px) clamp(14px, 3vw, 30px) clamp(40px, 8vh, 90px);
+  max-width:64rem;
+}
+.intro{
+  font-size:var(--fs-l);
+  font-weight:400;
+  line-height:1.25;
+  max-width:32ch;
+  margin-left:calc(var(--num) + .6ch);
+  margin-bottom:clamp(2.2em, 8vh, 4.6em);
+}
+
+/* ---------- signals catalog ---------- */
+.signals{ position:relative; }
+.signal{
+  display:block;
+  margin-left:calc(var(--num) + .6ch);
+  margin-bottom:1.1em;
+}
+.signal dl{
+  display:flex;
+  font-weight:700;
+  font-size:var(--fs-xl);
+  line-height:1.18;
+  width:fit-content;
+  max-width:100%;
+  transition:color var(--tr);
+}
+.signal dt{
+  font-variant-numeric:tabular-nums;
+  font-feature-settings:'tnum';
+  width:var(--num);
+  flex:0 0 auto;
+  font-weight:400;
+  color:var(--field-dim);
+  transition:color var(--tr);
+}
+.signal dd{
+  flex:1; min-width:0;
+}
+.signal p{
+  font-size:var(--fs-s);
+  line-height:1.45;
+  color:var(--field-dim);
+  max-width:52ch;
+  margin-top:.45em;
+  opacity:0;
+  transform:translateY(4px);
+  transition:opacity .25s ease, transform .25s ease, color var(--tr);
+}
+
+/* hover: show copy, dim siblings (desktop only) */
+@media (hover:hover) and (pointer:fine){
+  .signals:hover .signal:not(:hover) dl{ color:rgba(255,255,255,.4375); }
+  .signals:hover .signal:not(:hover) dt{ color:rgba(255,255,255,.28); }
+  .signal:hover dl, .signal:focus-visible dl{ color:var(--paper); }
+  .signal:hover p, .signal:focus-visible p{ opacity:1; transform:none; color:rgba(255,255,255,.8); }
+  .signal:hover dt{ color:var(--paper); }
+}
+/* touch/mobile: copy always visible */
+@media not ((hover:hover) and (pointer:fine)){
+  .signal p{ opacity:1; transform:none; color:rgba(255,255,255,.72); }
+}
+
+/* ---------- samples ---------- */
+.samples{ margin-top:clamp(3.6em, 12vh, 6.4em); }
+.samples-h{
+  font-size:var(--fs-s);
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  color:var(--field-dim);
+  margin-left:calc(var(--num) + .6ch);
+  margin-bottom:1.4em;
+}
+.sample-rows{ margin-left:calc(var(--num) + .6ch); max-width:56ch; }
+.sample{
+  display:flex; gap:1ch; align-items:baseline;
+  padding:.55em 0;
+  font-size:var(--fs-s);
+  line-height:1.45;
+  transition:opacity .22s ease, transform .22s ease;
+}
+.sample.swap{ opacity:0; transform:translateY(6px); }
+.sample-meta{ flex:0 0 13ch; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.sample-meta .mid{ color:var(--field-dim); font-weight:400; }
+.sample-line{ flex:1; min-width:0; color:rgba(255,255,255,.86); }
+.sample-src{ flex:0 0 auto; font-size:var(--fs-xs); color:var(--field-dim); text-align:right; }
+
+.shuffle{
+  display:inline-flex; align-items:baseline; gap:.55ch;
+  margin-top:1.6em; margin-left:calc(var(--num) + .6ch);
+  font-size:var(--fs-s); font-weight:700;
+  border-bottom:2px solid currentColor;
+  padding-bottom:.14em;
+  transition:opacity var(--tr);
+}
+.shuffle:hover{ opacity:.66; }
+
+/* ---------- footer ---------- */
+.foot{ background:var(--ink); color:var(--paper); }
+.foot-in{
+  display:flex; align-items:center; flex-wrap:wrap;
+  gap:clamp(14px, 2vw, 26px);
+  padding:clamp(22px, 4vh, 40px) clamp(14px, 3vw, 30px);
+  max-width:64rem; margin:0 auto;
+}
+.btn{
+  display:inline-flex; align-items:center; gap:.6ch;
+  font-size:var(--fs-s); font-weight:700;
+  background:var(--paper); color:var(--ink);
+  padding:.7em 1.15em;
+  border-radius:2px;
+  transition:opacity var(--tr), transform .2s cubic-bezier(.22,1,.36,1);
+}
+.btn .arr{ transition:transform .22s cubic-bezier(.22,1,.36,1); }
+.btn:hover{ opacity:.85; }
+.btn:hover .arr{ transform:translateX(3px); }
+.btn:active{ transform:scale(.97); }
+.foot-links{ display:flex; gap:clamp(12px, 1.8vw, 22px); font-size:var(--fs-s); font-weight:700; }
+.foot-links a{ color:rgba(255,255,255,.65); transition:color var(--tr); }
+.foot-links a:hover{ color:var(--paper); }
+.foot-copy{ margin-left:auto; font-size:var(--fs-xs); color:rgba(255,255,255,.55); }
+
+/* ---------- CJK ---------- */
+html[lang^="zh"]{ letter-spacing:0; }
+html[lang^="zh"] .intro{ line-height:1.55; max-width:24ch; }
+html[lang^="zh"] .signal dl{ letter-spacing:.01em; }
+html[lang^="zh"] .signal p{ line-height:1.7; max-width:34ch; }
+html[lang^="zh"] .sample-line{ line-height:1.7; }
+html[lang^="zh"] .sample{ gap:.8ch; }
+html[lang^="zh"] :root{ }
+html[lang^="zh"] .samples-h{ letter-spacing:.3em; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 760px){
+  .hdr{ padding-top:calc(var(--sp) * .6); }
+  .hdr-in{ font-size:var(--fs-s); }
+  .nav{ display:none; }
+  .cluster{ padding-top:5em; }
+  .intro{ margin-left:0; }
+  .signal{ margin-left:0; }
+  .signal dl{ font-size:var(--fs-l); }
+  .signal p{ max-width:none; }
+  .samples-h, .shuffle, .sample-rows{ margin-left:0; }
+  .sample{ flex-wrap:wrap; gap:.2em 1ch; }
+  .sample-meta{ flex-basis:auto; max-width:100%; }
+  .sample-line{ flex-basis:100%; }
+  .sample-src{ flex-basis:100%; text-align:left; }
+  .foot-copy{ margin-left:0; flex-basis:100%; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .signal p, .sample{ transition:none; }
+  .btn .arr, .shuffle{ transition:none; }
+}
